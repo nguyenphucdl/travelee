@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="com.travelee_travelee_war_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>com.travelee.rest.dao.place.PlaceEntity</class>
+    <class>com.travelee.rest.dao.place.Place</class>
+    <class>com.travelee.rest.dao.city.City</class>
+    <class>com.travelee.rest.dao.checkin.Checkin</class>
+    <class>com.travelee.rest.dao.user.User</class>
+    <class>com.travelee.rest.dao.tip.Tip</class>
+    <class>com.travelee.rest.dao.photo.Photo</class>
+    <class>com.travelee.rest.dao.user.Rating</class>
+    <class>com.travelee.rest.dao.city.CityEntity</class>
+    <class>com.travelee.rest.dao.user.UserEntity</class>
+    <class>com.travelee.rest.dao.tip.TipEntity</class>
+    <class>com.travelee.rest.dao.rating.RatingEntity</class>
+    <class>com.travelee.rest.dao.photo.PhotoEntity</class>
+    <class>com.travelee.rest.dao.checkin.CheckinEntity</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/travelee_legacy?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.password" value="root"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
+    </properties>
+  </persistence-unit>
+</persistence>

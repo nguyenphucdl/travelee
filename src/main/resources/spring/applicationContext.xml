@@ -1,0 +1,89 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"	
+       xsi:schemaLocation="
+		http://www.springframework.org/schema/beans	
+		http://www.springframework.org/schema/beans/spring-beans.xsd
+	 
+		http://www.springframework.org/schema/tx 
+		http://www.springframework.org/schema/tx/spring-tx.xsd
+		 
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+ 
+    <context:component-scan base-package="com.travelee.rest.*" />
+    <tx:annotation-driven transaction-manager="transactionManager" />
+      
+    <!-- ************ MySQL Data Source *********** -->
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location">
+            <value>classpath:config/database.properties</value>
+        </property>
+    </bean>
+    
+    <bean id="restDemoDS" 
+          class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+    </bean>
+    
+    <!-- ************ Hibernate session factory ************ -->
+    <bean id="sessionFactory" 
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource">
+            <ref bean="restDemoDS"/>
+        </property>
+        <property name="packagesToScan">
+            <list>
+                <value>com.travelee.rest.dao.place</value>
+                <value>com.travelee.rest.dao.photo</value>
+                <value>com.travelee.rest.dao.tip</value>
+                <value>com.travelee.rest.dao.checkin</value>
+                <value>com.travelee.rest.dao.city</value>
+                <value>com.travelee.rest.dao.user</value>
+                <value>com.travelee.rest.dao.rating</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <prop key="hibernate.show_sql">true</prop>
+            </props>
+        </property>
+        <!--<property name="mappingResources">
+        <list>
+            <value>named-queries.hbm.xml</value>
+        </list>
+        </property>-->
+    </bean>
+
+    <!-- ************ JPA configuration *********** -->
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="persistenceXmlLocation" value="classpath:config/persistence-demo.xml" />
+        <property name="persistenceUnitName" value="demoRestPersistence" />
+        <property name="dataSource" ref="restDemoDS" />          
+        <property name="packagesToScan" value="com.travelee.rest.*" />
+    </bean>
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+    
+    <!-- ************ Travelee configuration *********** -->
+    <bean id="cityDao" class="com.travelee.rest.dao.city.CityDaoJPA2Impl"/>
+    <bean id="cityService" class="com.travelee.rest.service.CityServiceDbAccessImpl" />
+    <bean id="cityResource" class="com.travelee.rest.resource.city.CityResource" />
+    
+    <bean id="placeDao" class="com.travelee.rest.dao.place.PlaceDaoJPA2Impl"/>
+    <bean id="placeService" class="com.travelee.rest.service.PlaceServiceDbAccessImpl" />
+    <bean id="placeResource" class="com.travelee.rest.resource.place.PlaceResource" />
+    
+    <bean id="photoDao" class="com.travelee.rest.dao.photo.PhotoDaoJPA2Impl"/>
+    <bean id="photoService" class="com.travelee.rest.service.PhotoServiceDbAccessImpl" />
+    <bean id="photoResource" class="com.travelee.rest.resource.photo.PhotoResource" />
+    
+    <bean id="hateoasBuilder" class="com.travelee.rest.hateoas.HateoastBuilder"></bean>
+    
+</beans>
